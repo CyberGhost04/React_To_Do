@@ -5,10 +5,27 @@ import './App.css'
 import DateTime from './Components/DateTime'
 import Pencil from './Images/pencil-edit-01.svg'
 import Check from './Images/checkmark-circle-02.svg'
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
+  const [val, setval] = useState("")
+  const [tasks, settasks] = useState([])
+
   const [background, setbackground] = useState("bg-gradient-to-r from-black to-gray-500")
+
+  const EditTask = ()=>{}
+
+  const DelTask = ()=>{}
+
+  const AddTask =()=>{
+    settasks([...tasks, {id: uuidv4(), val}])
+    console.log(tasks)
+  }
+
+  const ValChanged = (e)=>{
+    setval(e.target.value)
+  }
 
   return (
     <>
@@ -25,8 +42,8 @@ function App() {
           <h1 className='text-9xl text-white'>Just Do It.|</h1>
         </div>
         <div className="input flex justify-center align-middle">
-          <input type="text" id='task' className='w-[37%] h-[43px] rounded-l-[50px] bg-[#222222] text-white outline-none pl-6' />
-          <span className='w-20 h-[43px] text-black bg-white font-bold rounded-r-[50px] border-solid border-black border-2 flex flex-col align-middle justify-around pl-2'>Lets Go</span>
+          <input type="text" id='task' className='w-[37%] h-[43px] rounded-l-[50px] bg-[#222222] text-white outline-none pl-6' value={val} onChange={ValChanged} />
+          <span className='w-20 h-[43px] text-black bg-white font-bold rounded-r-[50px] border-solid border-black border-2 flex flex-col align-middle justify-around pl-2' onClick={AddTask}>Lets Go</span>
         </div>
       </div>
       <DateTime req={background} />
@@ -39,13 +56,19 @@ function App() {
               <button className='invert'><img src={Check} alt="" /></button>
             </div>
           </div>
+
+          {tasks.map((items)=>{
+            return 
+          })}
+
           <div className="text-white info flex justify-between bg-[#353839] border-[#353839] rounded-[50px] border-2 border-solid p-4 max-h-[4rem] max-w-[23rem] min-w-[23rem] ">
             <p className='pl-2'>Tasks goes here</p>
             <div className="btns flex gap-4">
-              <button className='invert'><img src={Pencil} alt="" /></button>
-              <button className='invert'><img src={Check} alt="" /></button>
+              <button className='invert' onClick={EditTask}><img src={Pencil} alt="" /></button>
+              <button className='invert' onClick={DelTask}><img src={Check} alt="" /></button>
             </div>
           </div>
+
         </div>
       </div>
     </>
