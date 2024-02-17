@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -11,6 +11,23 @@ function App() {
 
   const [val, setval] = useState("")
   const [tasks, settasks] = useState([])
+  const [finished, setfinished] = useState(true)
+
+  useEffect(() => {
+    let all_tasks = localStorage.getItem("todos")
+    if (all_tasks) {
+      let tods = JSON.parse(localStorage.getItem("todos"))
+      settasks(tods)
+    }
+  }, [])
+
+  const savetoLS = (params) => {
+    localStorage.setItem("todos", JSON.stringify(tasks))
+  }
+
+  const togglefinished = () => {
+    setfinished(!finished)
+  }
 
   const [background, setbackground] = useState("bg-gradient-to-r from-black to-gray-500")
 
@@ -22,6 +39,7 @@ function App() {
       }
     })
     DelTask(e, id)
+    savetoLS()
   }
 
   const DelTask = (e, id) => {
@@ -31,12 +49,13 @@ function App() {
     })
 
     settasks(newtasks)
-
+    savetoLS()
   }
 
   const AddTask = () => {
     settasks([...tasks, { id: uuidv4(), val, isComplete: false }])
     setval("")
+    savetoLS()
   }
 
   const ValChanged = (e) => {
@@ -51,6 +70,7 @@ function App() {
     let newTasks = [...tasks]
     newTasks[index].isComplete = !newTasks[index].isComplete
     settasks(newTasks)
+    savetoLS()
   }
 
   function childFunction(event) {
@@ -81,7 +101,7 @@ function App() {
       <div className={`p-4 nav h-[38vh] w-[100%] flex align-middle justify-center ${background}`}>
         <div className="flex flex-col align-top gap-2 overflow-auto">
           {tasks.map((items) => {
-            return <div key={items.id} onClick={(e) => { checkbox(e, items.id) }} className="text-white info flex justify-between bg-[#353839] border-[#353839] rounded-[50px] border-2 border-solid p-4 max-h-[40rem] min-w-[23rem] cursor-vertical-text">
+            return (finished || !items.isComplete) && <div key={items.id} onClick={(e) => { checkbox(e, items.id) }} className="text-white info flex justify-between bg-[#353839] border-[#353839] rounded-[50px] border-2 border-solid p-4 max-h-[40rem] min-w-[23rem] cursor-vertical-text">
               <p className={`overflow-y-auto overflow-x-hidden break-all max-w-[16rem] max-h-[20rem] pl-2 ${items.isComplete ? "line-through" : ""}`}>{items.val}</p>
               <div className="btns flex gap-4" onClick={childFunction(event)}>
                 <button className='invert min-h-2 min-w-2 cursor-pointer' onClick={(e) => { EditTask(e, items.id) }}><img src={Pencil} alt="" /></button>
@@ -92,8 +112,9 @@ function App() {
 
         </div>
       </div>
-      <div className={`nav h-[4vh] w-[100%] flex align-middle justify-center ${background}`}>
-        <input type="checkbox" />
+      <div className={`nav h-[4vh] w-[100%] flex align-middle justify-center gap-2 ${background} relative`}>
+      <input onChange={togglefinished} type="checkbox" checked={finished} />
+      <img src="view-off.svg" alt="" className='invert absolute left-[47.8%]' />
       </div>
     </>
   )
