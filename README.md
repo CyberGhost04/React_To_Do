@@ -36,6 +36,7 @@ cd your-repo-name
 
 ```bash 
 npm install
+npm install uuid
 
 ```
 4. Start the application: 
