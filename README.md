@@ -24,6 +24,31 @@ git clone https://github.com/yourusername/your-repo-name.git
 
 ```
 2. Navigate into the project directory:
+
 ```bash 
 cd your-repo-name
+
 ```
+
+3. Install the dependencies: 
+
+```bash 
+npm install
+
+```
+4. Start the application: 
+
+```bash 
+npm start
+``` 
+
+## Dependencies
+
+- React: A JavaScript library for building user interfaces.
+- Tailwind CSS: A utility-first CSS framework for rapidly building custom user interfaces.
+- uuid: A library to create unique identifiers.
+
+# Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
